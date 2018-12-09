@@ -40,8 +40,28 @@ To test if the python script works properly, execute it by typing :
 python3 main.py
 ```
 This shouln't display any output.  To check if all works properly, log in to your firebase console, and check if some data has been added to your firestore database.
-#### 5) Creating a service
+### 5) Creating a service
+The python script contains an infinite loop, with a thread sleep that stop the process for a minute at each iteration.  This way it could be used like a background process.  A good tutoriel for this can be found at the following address : [https://doc.ubuntu-fr.org/tutoriel/comment_transformer_un_programme_en_service](https://doc.ubuntu-fr.org/tutoriel/comment_transformer_un_programme_en_service)
+It's written in french unfortunatly.
 
+### 6) Using the webclient
+To use the web client you will need to make again some firebase configuration.  In each .html file, find this :
+```js
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyCAIt9lCBNwL2AweD6FdQFx5FkWAEqnFjY",
+    authDomain: "servermonitor-d4fc6.firebaseapp.com",
+    databaseURL: "https://servermonitor-d4fc6.firebaseio.com",
+    projectId: "servermonitor-d4fc6",
+    storageBucket: "servermonitor-d4fc6.appspot.com",
+    messagingSenderId: "908283698573"
+  };
+  firebase.initializeApp(config);
+</script>
+```
+And replace it by your proper web integration lines (you can retrieve it on your firebase console).  You will then need to add a new user, still with this firebase console.
+That's it, open the index.html file in your browser, log in with the account you just created and you now have a nice and clean interface to get some basics infos about your different machines running the python script.
 ## Contributing
 
 ## License
