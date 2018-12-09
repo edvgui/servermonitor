@@ -23,12 +23,12 @@ pip3 --version
 ```
 If you don't have it, install it : 
 ```Bash
-sudo apt install pip3
+sudo apt install python3-pip
 ```
 
 The python script need firebase_admin and psutil to work properly, you can install them by typing :
 ```Bash
-pip3 install --upgrade firebase_admin
+pip3 install firebase_admin
 pip3 install psutil
 ```
 ### 3) Firestore configuration
@@ -41,9 +41,21 @@ python3 main.py
 ```
 This shouln't display any output.  To check if all works properly, log in to your firebase console, and check if some data has been added to your firestore database.
 ### 5) Creating a service
-The python script contains an infinite loop, with a thread sleep that stop the process for a minute at each iteration.  This way it could be used like a background process.  A good tutoriel for this can be found at the following address : [https://doc.ubuntu-fr.org/tutoriel/comment_transformer_un_programme_en_service](https://doc.ubuntu-fr.org/tutoriel/comment_transformer_un_programme_en_service)
-It's written in french unfortunatly.
-
+The python script contains an infinite loop, with a thread sleep that stop the process for a minute at each iteration.  This way we would like it to be used as a background process.
+First we want our program to be accessible even when we aren't logged in, there is several possibility to place it, we will choose the folder /opt :
+```Bash
+sudo mv servermonitor /opt/servermonitor
+```
+As we want this script to be executed as soon as the machin boot and automatically, we will create a script, [servermonitor](./tools/servermonitor) (this script is based on this template : [https://github.com/fhd/init-script-template/edit/master/template](https://github.com/fhd/init-script-template/edit/master/template)), to put in the /etc/init.d/  directory.  Then we will make sure that this script is executable and add it to the other starting script list.
+```Bash
+sudo cp /tools/servermonitor /etc/init.d/servermonitor
+sudo chmod +x /etc/init.d/servermonitor
+sudo update-rc.d servermonitor
+```
+You can now restart your machine and the script sould be running normally.  If you want to start it manually immediatly you can also simply run :
+```Bash
+sudo /dev/init.d/servermonitor start
+```
 ### 6) Using the webclient
 To use the web client you will need to make again some firebase configuration.  In each .html file, find this :
 ```js
@@ -63,5 +75,5 @@ To use the web client you will need to make again some firebase configuration.  
 And replace it by your proper web integration lines (you can retrieve it on your firebase console).  You will then need to add a new user, still with this firebase console.
 That's it, open the index.html file in your browser, log in with the account you just created and you now have a nice and clean interface to get some basics infos about your different machines running the python script.
 ## Contributing
-
+This app is more like a side project, just for fun and without any ambition.  It might thus never be complete.  If you feel like upgrading or correcting it, feel free to post issues or pull request.  
 ## License
