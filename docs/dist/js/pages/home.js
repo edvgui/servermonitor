@@ -69,7 +69,8 @@ function generateHeader(computer) {
 function generateBody(computer) {
     var text = '';
     text += '<div class="card-body">';
-    text += '<p>Ip address : <span class="float-right">' + computer.data.publicip + '</span></p>';
+    text += '<p>Public Ip address : <span class="float-right">' + computer.data.publicip + '</span></p>';
+    text += '<p>Local Ip address : <span class="float-right">' + computer.data.localip + '</span></p>';
     text += '<p>Number of cores : <span class="float-right">' + computer.data.realcores + '</span></p>';
     text += '<p>Number of virtual cores : <span class="float-right">' + computer.data.virtualcores + '</span></p>';
     text += '<p>Total memory : <span class="float-right">' + Math.round(computer.data.totalmemory / (1000000000)) + ' GB</span></p>';
@@ -89,7 +90,9 @@ function generateFooter(computer) {
     const updateTime = new Date(computer.data.lastupdate);
     var text = '';
     text += '<div class="card-footer">';
-    text += '<p>Last update : <span class="float-right">' + updateTime.toString() + '</span></p>';
+    text += '<p>Last update : ' + updateTime.toString() + '</p>';
+    if (!isConnected(computer)) 
+        text += "<button type=\"button\" class=\"btn btn-block btn-danger btn-lg\" onclick=\"deleteChart('" + computer.name + "')\">Delete</button>";
     text += '</div>';
     return text;
 }
@@ -100,6 +103,13 @@ function isConnected(computer) {
     if (now > update + 1000 * 60 * 2)
         return false
     return true;
+}
+
+function deleteChart(name) {
+    for (var i = 0; i < computersList.length; i++)
+        if (computersList[i].name == name)
+            computersList.splice(i, 1);
+    updateComputerGrid();
 }
 
 /*
