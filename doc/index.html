@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="author" content="Guillaume Everarts">
+  <title>Server monitor | Authentification</title>
+  <!-- Icon in tab -->
+  <link rel="icon" href="dist/img/ic_launcher_round.png">
+  <script src="https://www.gstatic.com/firebasejs/5.5.5/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/5.5.5/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/5.5.5/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/5.7.0/firebase.js"></script>
+  <script>
+    // Initialize Firebase
+    var config = {
+      apiKey: "AIzaSyCAIt9lCBNwL2AweD6FdQFx5FkWAEqnFjY",
+      authDomain: "servermonitor-d4fc6.firebaseapp.com",
+      databaseURL: "https://servermonitor-d4fc6.firebaseio.com",
+      projectId: "servermonitor-d4fc6",
+      storageBucket: "servermonitor-d4fc6.appspot.com",
+      messagingSenderId: "908283698573"
+    };
+    firebase.initializeApp(config);
+  </script>
+  <script src="https://cdn.firebase.com/libs/firebaseui/3.1.1/firebaseui.js"></script>
+  <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.1.1/firebaseui.css" />  
+  <script type="text/javascript">
+    // FirebaseUI config.
+    var uiConfig = {
+      signInSuccessUrl: '<url-to-redirect-to-on-success>',
+      signInOptions: [
+        // Leave the lines as is for the providers you want to offer your users.
+        firebase.auth.EmailAuthProvider.PROVIDER_ID
+      ]
+    };
+
+    // Initialize the FirebaseUI Widget using Firebase.
+    var ui = new firebaseui.auth.AuthUI(firebase.auth());
+    // The start method will wait until the DOM is loaded.
+    ui.start('#firebaseui-auth-container', uiConfig);
+
+    firebase.auth().onAuthStateChanged(firebaseUser => {
+      if (firebaseUser) {
+        console.log(firebaseUser);
+        window.location.assign("./home.html");
+        document.getElementById("firebaseui-auth-container").innerHTML = "";
+      }
+      else {
+        console.log("You aren't logged in");
+      }
+    });
+  </script>
+</head>
+
+<body>
+  <!-- The surrounding HTML is left untouched by FirebaseUI.
+         Your app may use that space for branding, controls and other customizations.-->
+
+  <div id="firebaseui-auth-container"></div>
+</body>
+
+</html>

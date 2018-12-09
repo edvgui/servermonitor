@@ -1,0 +1,13 @@
+Pour l'installation :
+
+%%% Installation des dependances %%%
+sudo apt install python-pip
+pip install --upgrade firebase-admin
+pip install psutil
+
+%%% Execution script %%%
+python main.py
+
+%%% Creation startup script %%%
+  sudo cp /path_to_script/script.sh /etc/init.d/
+    sudo update-rc.d script.sh defaults
