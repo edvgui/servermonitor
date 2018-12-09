@@ -13,7 +13,6 @@ function getComputers() {
         computersList.sort(function (a, b) {
             return b.id - a.id;
         });
-        console.log(computersList);
         updateComputerGrid();
     });
 }
@@ -59,9 +58,11 @@ function generateHeader(computer) {
     text += '<i class="material-icons" style="vertical-align: middle; margin-right: 10px;">computer</i>';
     text += computer.name;
     text += '</h3><div class="card-tools">';
-    text += '<span class="float-right badge bg-success">';
-    text += 'Connected';
-    text += '</span></div></div>';
+    if (isConnected(computer)) 
+        text += '<span class="float-right badge bg-success">Connected</span>';
+    else
+        text += '<span class="float-right badge bg-danger">Offline</span>';
+    text += '</div></div>';
     return text;
 }
 
@@ -85,11 +86,20 @@ function generateBody(computer) {
 }
 
 function generateFooter(computer) {
+    const updateTime = new Date(computer.data.lastupdate);
     var text = '';
     text += '<div class="card-footer">';
-    text += '<p>Last update : <span class="float-right">' + computer.data.lastupdate + '</span></p>';
+    text += '<p>Last update : <span class="float-right">' + updateTime.toString() + '</span></p>';
     text += '</div>';
     return text;
+}
+
+function isConnected(computer) {
+    const now = Date.now();
+    const update = computer.data.lastupdate;
+    if (now > update + 1000 * 60 * 2)
+        return false
+    return true;
 }
 
 /*
