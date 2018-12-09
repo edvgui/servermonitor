@@ -54,7 +54,7 @@ sudo update-rc.d servermonitor
 ```
 You can now restart your machine and the script sould be running normally.  If you want to start it manually immediatly you can also simply run :
 ```Bash
-sudo /dev/init.d/servermonitor start
+sudo /etc/init.d/servermonitor start
 ```
 ### 6) Using the webclient
 To use the web client you will need to make again some firebase configuration.  In each .html file, find this :
