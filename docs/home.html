@@ -123,7 +123,7 @@
             <li class="nav-item">
               <a href="#" class="nav-link active">
                 <i class="material-icons" style="vertical-align: middle; margin-right: 10px;">home</i>
-                <p>Accueil</p>
+                <p>Dashboard</p>
               </a>
             </li>
           </ul>
@@ -140,8 +140,23 @@
         <div class="container-fluid">
           <div class="row mb-2">
             <div class="col-sm-6">
-              <h1 class="m-0 text-dark">Accueil</h1>
+              <h1 class="m-0 text-dark">Dashboard</h1>
             </div>
+          </div>
+          <div class="row">
+              <div class="col-lg-2">
+                <p>Display servers that are : </p>
+              </div>
+              <div class="col-lg-2">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="check-connected" onchange="updateViewedList()" checked>
+                  <label class="form-check-label"><span class="badge bg-success">Connected</span></label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="check-offline" onchange="updateViewedList()" checked>
+                  <label class="form-check-label"><span class="badge bg-danger">Offline</span></label>
+                </div>
+              </div>
           </div>
           <!-- /.row -->
         </div>
@@ -152,14 +167,15 @@
       <!-- Main content -->
       <section id="body" class="content hide">
         <div class="container-fluid">
-          <div class="row" id="computer_cards">
-          </div>
-          <!-- /.card-footer -->
+          <div class="row" id="computer-cards"></div>
+          <div class="row" id="computer-modals-delete"></div>
+          <div class="row" id="computer-modals-info"></div>
         </div>
     </div>
 
   </div>
   <!-- /.container-fluid -->
+  
   </section>
   <!-- /.content -->
   </div>
