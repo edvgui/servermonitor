@@ -14,6 +14,7 @@ class Computer:
     ref_virtualcores = u'virtualcores'
     ref_publicip = u'publicip'
     ref_localip = u'localip'
+    ref_cpuload = u'cpuload'
     ref_freemem = u'freememory'
     ref_totmem = u'totalmemory'
     ref_freestorage = u'freestorage'
@@ -30,6 +31,7 @@ class Computer:
         self.update_loc_IP()
         self.totalmemory = psutil.virtual_memory().total
         self.freememory = psutil.virtual_memory().available
+        self.cpuload = psutil.cpu_percent()
         self.virtualcores = psutil.cpu_count()
         self.realcores = psutil.cpu_count(logical=False)
         self.totalstorage = psutil.disk_usage('/').total
@@ -52,6 +54,9 @@ class Computer:
         except:
             self.localip = '0.0.0.0'
 
+    def update_cpu_load(self):
+        self.cpuload = psutil.cpu_percent()
+
     def update_free_mem(self):
         self.freememory = psutil.virtual_memory().free
         self.lastupdate = int(round(time.time() * 1000))
@@ -73,5 +78,6 @@ class Computer:
             self.ref_freestorage: self.freestorage,
             self.ref_publicip: self.publicip,
             self.ref_localip: self.localip,
+            self.ref_cpuload: self.cpuload,
             self.ref_lastup: self.lastupdate
         }
