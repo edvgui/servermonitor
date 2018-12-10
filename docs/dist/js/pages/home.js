@@ -17,8 +17,7 @@ function getComputers() {
         computersList.sort(function (a, b) {
             return b.id - a.id;
         });
-        for (var i = 0; i < computersList.length; i++)
-            computersListView.push(computersList[i]);
+        updateViewedList();
         updateComputerGrid();
     });
 }
@@ -29,7 +28,6 @@ function updateComputerGrid() {
         text += generateCard(computersListView[i]);
     }
     grid.innerHTML = text;
-    updateModals();
 
     $(function () {
         /* jQueryKnob */
@@ -50,7 +48,7 @@ function updateComputerGrid() {
 
 function generateCard(computer) {
     var text = "";
-    text += '<div class="col-lg-3"><div class="card card-primary card-outline">';
+    text += '<div class="col-lg-4"><div class="card card-primary card-outline">';
     text += generateCardHeader(computer);
     text += generateCardBody(computer);
     text += generateCardFooter(computer);
@@ -101,22 +99,21 @@ function generateCardFooter(computer) {
     var text = '';
     text += '<div class="card-footer">';
     text += '<p>Last update : ' + updateTime.toString() + '</p>';
-    text += "<button type=\"button\" class=\"btn btn-block btn-info btn-sm\" data-toggle=\"modal\" data-target=\"#modal-info-" + computer.name + "\">More informations</button>";
+    text += "<button type=\"button\" onclick=\"updateModals('" + computer.name + "', 'info')\" class=\"btn btn-block btn-info btn-sm\">More informations</button>";
     if (!isConnected(computer)) 
-        text += "<button type=\"button\" class=\"btn btn-block btn-outline-danger btn-sm\" data-toggle=\"modal\" data-target=\"#modal-delete-" + computer.name + "\">Delete</button>";
+        text += "<button type=\"button\" onclick=\"updateModals('" + computer.name + "', 'delete')\" class=\"btn btn-block btn-outline-danger btn-sm\">Delete</button>";
     text += '</div>';
     return text;
 }
 
-function updateModals() {
-    var textDelete = '';
-    var textInfo = '';
-    computersListView.forEach(function(computer) {
-        textInfo += generateModalInfo(computer);
-        if (!isConnected(computer)) textDelete += generateModalDelete(computer);
+function updateModals(name, type) {
+    computersListView.forEach(function (computer) {
+        if (computer.name == name) {
+            modalsDelete.innerHTML = generateModalDelete(computer);
+            modalsInfo.innerHTML = generateModalInfo(computer);
+            $("#modal-" + type + "-" + name).modal("show");
+        }
     });
-    modalsDelete.innerHTML = textDelete;
-    modalsInfo.innerHTML = textInfo;
 }
 
 function generateModalInfo(computer) {
@@ -236,11 +233,11 @@ function updateViewedList() {
     const checkConnected = document.getElementById("check-connected");
     const checkOffline = document.getElementById("check-offline");
     computersListView = [];
-    for (var i = 0; i < computersList.length; i++) {
-        var connected = isConnected(computersList[i]);
-        if (connected && checkConnected.checked) computersListView.push(computersList[i]);
-        else if (!connected && checkOffline.checked) computersListView.push(computersList[i]);
-    }
+    computersList.forEach(function (computer) {
+        var connected = isConnected(computer);
+        if (connected && checkConnected.checked) computersListView.push(computer);
+        else if (!connected && checkOffline.checked) computersListView.push(computer);
+    });
     updateComputerGrid();
 }
 
