@@ -58,7 +58,7 @@ class Computer:
         self.cpuload = psutil.cpu_percent()
 
     def update_free_mem(self):
-        self.freememory = psutil.virtual_memory().free
+        self.freememory = psutil.virtual_memory().available
         self.lastupdate = int(round(time.time() * 1000))
 
     def update_free_storage(self):
