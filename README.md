@@ -37,7 +37,7 @@ In the process you will need to insert a .json file containing the private key n
 ### 4) Testing the python script
 To test if the python script works properly, execute it by typing : 
 ```Bash
-python3 main.py
+python3 src/main.py
 ```
 This shouln't display any output.  To check if all works properly, log in to your firebase console, and check if some data has been added to your firestore database.
 ### 5) Creating a service

@@ -10,7 +10,7 @@
 ### END INIT INFO
 
 dir="/opt/servermonitor"
-cmd="python3 main.py"
+cmd="python3 src/main.py"
 user="guillaume"
 
 name=`basename $0`
