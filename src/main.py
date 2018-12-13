@@ -28,6 +28,8 @@ if __name__ == "__main__":
         my_comp.update_free_storage()
         my_comp.update_pub_IP()
         my_comp.update_loc_IP()
+        my_comp.update_battery()
+        my_comp.update_cpu_load()
         try:
             doc_ref.update(my_comp.to_up())
         except:
