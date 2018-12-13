@@ -141,6 +141,7 @@ function generateModalInfoHeader(computer) {
 }
 
 function generateModalInfoBody(computer) {
+    console.log(computer);
     var text = '';
     text += '<div class="modal-body">';
     text += '<p>Status : ';
@@ -151,6 +152,14 @@ function generateModalInfoBody(computer) {
     text += '</p>';
     text += '<p>Public Ip address : <span class="float-right">' + computer.data.publicip + '</span></p>';
     text += '<p>Local Ip address : <span class="float-right">' + computer.data.localip + '</span></p>';
+    if (computer.data.hasbattery) {
+        text += '<p>Battery : <span class="float-right">' + Math.round(computer.data.batterypercent) + ' %';
+        if (computer.data.batteryplugged)
+            text += ' (Charging)';
+        text += '</span></p>';
+    }
+    else
+        console.log('This device doesn t have a battery');
     text += '<p>Number of cores : <span class="float-right">' + computer.data.realcores + '</span></p>';
     text += '<p>Number of virtual cores : <span class="float-right">' + computer.data.virtualcores + '</span></p>';
     text += '<p>Total memory : <span class="float-right">' + Math.round(computer.data.totalmemory / (1000000000)) + ' GB</span></p>';

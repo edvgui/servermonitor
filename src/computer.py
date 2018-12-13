@@ -20,6 +20,9 @@ class Computer:
     ref_freestorage = u'freestorage'
     ref_totstorage = u'totalstorage'
     ref_lastup = u'lastupdate'
+    ref_hasbattery = u'hasbattery'
+    ref_battery_percent = u'batterypercent'
+    ref_battery_plugged = u'batteryplugged'
 
     def __init__(self):
         self.name = socket.gethostname()
@@ -37,6 +40,10 @@ class Computer:
         self.totalstorage = psutil.disk_usage('/').total
         self.freestorage = psutil.disk_usage('/').free
         self.lastupdate = int(round(time.time() * 1000))
+        self.battery = False
+        self.battery_percent = 0
+        self.charging = False
+        self.update_battery()
 
     def update_pub_IP(self):
         try:
@@ -65,6 +72,13 @@ class Computer:
         self.freestorage = psutil.disk_usage('/').free
         self.lastupdate = int(round(time.time() * 1000))
 
+    def update_battery(self):
+        battery_info = psutil.sensors_battery()
+        self.battery = battery_info is not None
+        if self.battery:
+            self.battery_percent = battery_info.percent
+            self.charging = battery_info.power_plugged
+
     def get_name(self):
         return self.name
 
@@ -79,5 +93,8 @@ class Computer:
             self.ref_publicip: self.publicip,
             self.ref_localip: self.localip,
             self.ref_cpuload: self.cpuload,
-            self.ref_lastup: self.lastupdate
+            self.ref_lastup: self.lastupdate,
+            self.ref_hasbattery: self.battery,
+            self.ref_battery_percent: self.battery_percent,
+            self.ref_battery_plugged: self.charging
         }
