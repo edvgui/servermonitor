@@ -9,7 +9,7 @@ from firebase_admin import firestore
 from computer import Computer
 
 # Use a service account
-cred = credentials.Certificate('{0}/{1}'.format(os.path.dirname(os.path.abspath(__file__)), 'priv/servermonitor-d4fc6-firebase-adminsdk-2y65x-22ea747033.json'))
+cred = credentials.Certificate('{0}/{1}'.format(os.path.dirname(os.path.abspath(__file__)), '../priv/servermonitor-d4fc6-firebase-adminsdk-2y65x-22ea747033.json'))
 firebase_admin.initialize_app(cred)
 db = firestore.client()
 
