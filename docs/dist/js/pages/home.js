@@ -4,6 +4,10 @@ var computersListView = [];
 const grid = document.getElementById("computer-cards");
 const modalsDelete = document.getElementById("computer-modals-delete");
 const modalsInfo = document.getElementById("computer-modals-info");
+const searchField = document.getElementById("search-bar");
+const searchButton = document.getElementById("search-button");
+searchButton.addEventListener("click", mySearch);
+searchField.addEventListener("submit", mySearch);
 
 getComputers();
 
@@ -28,22 +32,48 @@ function updateComputerGrid() {
         text += generateCard(computersListView[i]);
     }
     grid.innerHTML = text;
+    if (text == "") grid.innerHTML = '<div class="center">No computer found.</div>';
 
     $(function () {
         /* jQueryKnob */
-  
+
         $('.knob').knob({
-          
+
         })
         /* END JQUERY KNOB */
-  
+
         //INITIALIZE SPARKLINE CHARTS
         $('.sparkline').each(function () {
-          var $this = $(this)
-          $this.sparkline('html', $this.data())
+            var $this = $(this)
+            $this.sparkline('html', $this.data())
         })
-  
-      });
+
+    });
+}
+
+function computerToString(computer) {
+    var str = "";
+    str += "name: " + computer.name + ", ";
+    for (var property in computer.data) {
+        if (computer.data.hasOwnProperty(property)) {
+            str += property + ": " + computer.data[property] + ", ";
+        }
+    }
+    return str;
+}
+
+function mySearch() {
+    var text = searchField.value;
+    console.log(text);
+    text = text.toLowerCase();
+    result = [];
+    updateViewedList();
+    computersListView.forEach(function (computer) {
+        if (computerToString(computer).toLowerCase().includes(text))
+            result.push(computer);
+    });
+    computersListView = result;
+    updateComputerGrid();
 }
 
 function generateCard(computer) {
@@ -63,7 +93,7 @@ function generateCardHeader(computer) {
     text += '<i class="material-icons" style="vertical-align: middle; margin-right: 10px;">computer</i>';
     text += computer.name;
     text += '</h3><div class="card-tools">';
-    if (isConnected(computer)) 
+    if (isConnected(computer))
         text += '<span class="float-right badge bg-success">Connected</span>';
     else
         text += '<span class="float-right badge bg-danger">Offline</span>';
@@ -100,7 +130,7 @@ function generateCardFooter(computer) {
     text += '<div class="card-footer">';
     text += '<p>Last update : ' + updateTime.toString() + '</p>';
     text += "<button type=\"button\" onclick=\"updateModals('" + computer.name + "', 'info')\" class=\"btn btn-block btn-info btn-sm\">More informations</button>";
-    if (!isConnected(computer)) 
+    if (!isConnected(computer))
         text += "<button type=\"button\" onclick=\"updateModals('" + computer.name + "', 'delete')\" class=\"btn btn-block btn-outline-danger btn-sm\">Delete</button>";
     text += '</div>';
     return text;
@@ -145,7 +175,7 @@ function generateModalInfoBody(computer) {
     var text = '';
     text += '<div class="modal-body">';
     text += '<p>Status : ';
-    if (isConnected(computer)) 
+    if (isConnected(computer))
         text += '<span class="float-right badge bg-success">Connected</span>';
     else
         text += '<span class="float-right badge bg-danger">Offline</span>';
@@ -210,17 +240,25 @@ function generateModalDeleteBody(computer) {
     return text;
 }
 
+var currentFocus;
 function generateModalDeleteFooter(computer) {
     var text = '';
     text += '<div class="modal-footer">';
     text += '<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>';
-    text += "<button type=\"button\" class=\"btn btn-danger\" data-dismiss=\"modal\" onclick=\"deleteComputer(\"" + computer.name + "\")>Delete</button>";
+    text += '<button type="button" class="btn btn-danger" data-dismiss="modal" onclick="deleteComputer()">Delete</button>';
     text += '</div>';
+    currentFocus = computer;
     return text;
 }
 
-function deleteComputer(computer) {
-    console.log('Deleting computer from database...');
+function deleteComputer() {
+    if (!currentFocus) return;
+    console.log("Delete computer : " + currentFocus.name);
+    computers.doc(currentFocus.name).delete().then(function () {
+        console.log("Document successfully deleted!");
+    }).catch(function (error) {
+        console.error("Error removing document: ", error);
+    });
 }
 
 function isConnected(computer) {
@@ -282,7 +320,7 @@ function updateViewedList() {
     <div class="card-header d-flex p-0">
         <h3 class="card-title p-3">
         <i class="material-icons" style="vertical-align: middle; margin-right: 10px;">computer</i>
-        Computer name 
+        Computer name
         </h3>
         <div class="card-tools">
         <span class="float-right badge bg-success">Connected</span>

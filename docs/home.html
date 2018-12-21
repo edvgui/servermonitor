@@ -58,7 +58,6 @@
   <script type="text/javascript">
     firebase.auth().onAuthStateChanged(firebaseUser => {
       if (firebaseUser) {
-        console.log("We got a user here : ", firebaseUser);
         document.getElementById("body").classList.remove("hide");
         if (firebaseUser.photoURL != null) document.getElementById("userpic").src = firebaseUser.photoURL;
       }
@@ -170,9 +169,10 @@
               </div>
             </div>
             <div class="col-lg-4 input-group">
-              <input type="text" class="form-control" placeholder="Search">
+              <input id="search-bar" type="text" action="submit" class="form-control" placeholder="Search">
               <div class="input-group-prepend">
-                <a type="button" class="btn btn-default btn-xs"><i class="material-icons">search</i></a>
+                <a id="search-button" type="button" class="btn btn-default btn-xs"><i class="material-icons">search</i></a>
+                <a id="cancel-button" type="button" class="btn btn-outline-warning btn-xs"><i class="material-icons">cancel</i></a>
               </div>
             </div>
           </div>
