@@ -1,5 +1,6 @@
 # Server monitor
 This repo contains a simple tool currently in developpment for monitoring some linux machines.  The docs/ folder contains a static website used as a client for different machines, displaying some basic informations about them.  The communication between the machines and the webclient is done via the [firestore api](https://firebase.google.com/).
+![Web interface screenshot](mockup.png)
 
 ## Installation
 The following installation steps are those needed for an installation on ubuntu 18.04, if you have another debian distribution, it should work the same way.
