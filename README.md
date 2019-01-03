@@ -29,7 +29,8 @@ sudo apt install python3-pip
 
 The python script need firebase_admin and psutil to work properly, you can install them by typing :
 ```Bash
-pip3 install firebase_admin
+pip3 install firebase-admin
+pip3 install google-cloud-firebase
 pip3 install psutil
 ```
 ### 3) Firestore configuration
@@ -51,7 +52,7 @@ As we want this script to be executed as soon as the machin boot and automatical
 ```Bash
 sudo cp /tools/servermonitor /etc/init.d/servermonitor
 sudo chmod +x /etc/init.d/servermonitor
-sudo update-rc.d servermonitor
+sudo update-rc.d servermonitor defaults
 ```
 You can now restart your machine and the script sould be running normally.  If you want to start it manually immediatly you can also simply run :
 ```Bash
